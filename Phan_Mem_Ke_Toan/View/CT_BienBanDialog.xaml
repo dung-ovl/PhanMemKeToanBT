@@ -1,0 +1,94 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.CT_BienBanDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        mc:Ignorable="d"
+        Title="Chi tiết biên bản"
+        xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
+        Height="600"
+        Width="900"
+        xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{DynamicResource WindowStyle}"
+        DataContext="{StaticResource BienBanVM}"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="450"
+        MinWidth="600">
+    <DockPanel Background="White">
+        <DockPanel Name="dialog"
+                   LastChildFill="False"
+                   Margin="20,0,20,20">
+            <Separator Background="{DynamicResource DividerBrush}"
+                       DockPanel.Dock="Top" />
+            <Grid DockPanel.Dock="Top"
+                  Margin="20,10,20,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Margin="0,0,80,0">
+                    <TextBox materialDesign:HintAssist.Hint="Số biên bản"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             VerticalAlignment="Center"
+                             IsEnabled="False"
+                             Text="{Binding txtSoBienBan}" />
+
+                </StackPanel>
+            </Grid>
+            <DataGrid x:Name="listview"
+                      ItemsSource="{Binding ListDataCT}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CellStyle="{StaticResource CellStyle}"
+                      BorderThickness="1"
+                      RowStyle="{StaticResource RowStyle}"
+                      AlternationCount="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding MaVT}"
+                                        IsReadOnly="True"
+                                        Header="Mã vật tư"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding TenVT}"
+                                        IsReadOnly="True"
+                                        Header="Tên vật tư"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding TenDVT}"
+                                        IsReadOnly="True"
+                                        Header="Đơn vị tính"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding SLSoSach}"
+                                        IsReadOnly="True"
+                                        Header="SL sổ sách"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding SLThucTe}"
+                                        IsReadOnly="True"
+                                        Header="SL thực tế"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding SLThua}"
+                                        IsReadOnly="True"
+                                        Header="SL thừa"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding SLThieu}"
+                                        IsReadOnly="True"
+                                        Header="SL thiếu"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding SLPhamChatTot}"
+                                        IsReadOnly="True"
+                                        Header="SL phẩm chất tốt"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding SLPhamChatKem}"
+                                        IsReadOnly="True"
+                                        Header="SL phẩm chất kém"
+                                        Width="auto" />
+                    <DataGridTextColumn Binding="{Binding SLMatPhamChat}"
+                                        IsReadOnly="True"
+                                        Header="SL mất phẩm chất"
+                                        Width="auto" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </DockPanel>
+</Window>

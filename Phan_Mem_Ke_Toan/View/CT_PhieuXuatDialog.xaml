@@ -1,0 +1,104 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.CT_PhieuXuatDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        mc:Ignorable="d"
+        Title="Chi tiết phiếu xuất"
+        xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
+        Height="600"
+        Width="900"
+        xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{DynamicResource WindowStyle}"
+        DataContext="{StaticResource PhieuXuatVM}"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="600"
+        MinWidth="900">
+    <Window.Resources>
+        <converter:MoneyVNConvert x:Key="moneyConverter" />
+    </Window.Resources>
+    <DockPanel Background="White">
+        <DockPanel Name="dialog"
+                   LastChildFill="False"
+                   Margin="20,0,20,20">
+            <Separator Background="{DynamicResource DividerBrush}"
+                       DockPanel.Dock="Top" />
+            <Grid DockPanel.Dock="Top"
+                  Margin="20,10,20,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Margin="0,0,80,0">
+                    <TextBox materialDesign:HintAssist.Hint="Số phiếu"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             VerticalAlignment="Center"
+                             IsEnabled="False"
+                             Text="{Binding txtSoPhieu}" />
+
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Margin="40 0 0 0">
+                    <TextBox materialDesign:HintAssist.Hint="Tổng tiền"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             VerticalAlignment="Center"
+                             IsEnabled="False"
+                             Text="{Binding txtTongTien, Converter={StaticResource moneyConverter}}" />
+
+                </StackPanel>
+            </Grid>
+            <DataGrid x:Name="listview"
+                      ItemsSource="{Binding ListDataCT}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CellStyle="{StaticResource CellStyle}"
+                      BorderThickness="1"
+                      RowStyle="{StaticResource RowStyle}"
+                      AlternationCount="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding MaVT}"
+                                        IsReadOnly="True"
+                                        Header="Mã vật tư"
+                                        Width="*" />
+                    <DataGridTextColumn Binding="{Binding TenVT}"
+                                        IsReadOnly="True"
+                                        Header="Tên vật tư"
+                                        Width="*" />
+                    <DataGridTextColumn Binding="{Binding TenDVT}"
+                                        IsReadOnly="True"
+                                        Header="Đơn vị tính"
+                                        Width="*" />
+
+                    <DataGridTextColumn Binding="{Binding MaTK}"
+                                        IsReadOnly="True"
+                                        Header="Tài khoản nợ"
+                                        Width="*"
+                                        HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+
+                    <DataGridTextColumn Binding="{Binding SLSoSach}"
+                                        IsReadOnly="True"
+                                        Header="Số lượng sổ sách"
+                                        Width="*"
+                                        HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+                    <DataGridTextColumn Binding="{Binding SLThucTe}"
+                                        IsReadOnly="True"
+                                        Header="Số lượng thực tế"
+                                        Width="*"
+                                        HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+
+                    <DataGridTextColumn Binding="{Binding DonGia, Converter={StaticResource moneyConverter}}"
+                                        IsReadOnly="True"
+                                        Header="Đơn giá"
+                                        Width="*" />
+                    <DataGridTextColumn Binding="{Binding ThanhTien, Converter={StaticResource moneyConverter}}"
+                                        IsReadOnly="True"
+                                        Header="Thành tiền"
+                                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </DockPanel>
+</Window>

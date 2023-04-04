@@ -1,0 +1,514 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{89CA0A24-A44D-4E06-AC10-211EF4DA1063}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Phan_Mem_Ke_Toan</RootNamespace>
+    <AssemblyName>Phan_Mem_Ke_Toan</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetProjects.DataVisualization.Toolkit, Version=6.0.90.0, Culture=neutral, PublicKeyToken=79778c5f2eed289b, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.WpfToolkit.DataVisualization.6.0.90\lib\net40\DotNetProjects.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=2.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.0.0\lib\net452\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.0.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="API\CRUD.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converter\Booleaninverter.cs" />
+    <Compile Include="Converter\DisplayComboboxConvert.cs" />
+    <Compile Include="Model\AccountSystem.cs" />
+    <Compile Include="Converter\MoneyVNConvert.cs" />
+    <Compile Include="Model\BienBan.cs" />
+    <Compile Include="Model\BienBanDetail.cs" />
+    <Compile Include="Model\BoPhan.cs" />
+    <Compile Include="Model\CongTrinh.cs" />
+    <Compile Include="Model\CT_BienBan.cs" />
+    <Compile Include="Model\CT_BienBanDetail.cs" />
+    <Compile Include="Model\CT_PhieuNhap.cs" />
+    <Compile Include="Model\CT_PhieuNhapDetail.cs" />
+    <Compile Include="Model\CT_PhieuXuat.cs" />
+    <Compile Include="Model\CT_PhieuXuatDetail.cs" />
+    <Compile Include="Model\DataChart.cs" />
+    <Compile Include="Model\DataNhapXuat.cs" />
+    <Compile Include="Model\DonViTinh.cs" />
+    <Compile Include="Model\DuDauVatTu.cs" />
+    <Compile Include="Model\Kho.cs" />
+    <Compile Include="Model\KhoDetail.cs" />
+    <Compile Include="Model\LoaiVatTu.cs" />
+    <Compile Include="Model\NguoiGiao.cs" />
+    <Compile Include="Model\NguoiGiaoDetail.cs" />
+    <Compile Include="Model\NguoiNhan.cs" />
+    <Compile Include="Model\NguoiNhanDetail.cs" />
+    <Compile Include="Model\NhaCungCap.cs" />
+    <Compile Include="Model\NhanVien.cs" />
+    <Compile Include="Model\NhanVienDetail.cs" />
+    <Compile Include="Model\NhapXuatTon.cs" />
+    <Compile Include="Model\PhieuNhap.cs" />
+    <Compile Include="Model\PhieuNhapDetail.cs" />
+    <Compile Include="Model\PhieuXuat.cs" />
+    <Compile Include="Model\PhieuXuatDetail.cs" />
+    <Compile Include="Model\TaiKhoan.cs" />
+    <Compile Include="Model\VatTu.cs" />
+    <Compile Include="Model\VatTuDetail.cs" />
+    <Compile Include="Utils\BindingProxy.cs" />
+    <Compile Include="Utils\FilterSupport.cs" />
+    <Compile Include="Utils\PasswordBoxAssistant.cs" />
+    <Compile Include="ValidRule\MatchPassword.cs" />
+    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="ValidRule\DateValidRule.cs" />
+    <Compile Include="ValidRule\FloatNumber.cs" />
+    <Compile Include="ValidRule\MoneyValidRule.cs" />
+    <Compile Include="ValidRule\NotEmptyRule.cs" />
+    <Compile Include="ValidRule\PhoneNumber.cs" />
+    <Compile Include="ValidRule\SLPhamChatValid.cs" />
+    <Compile Include="ValidRule\Valid.cs" />
+    <Compile Include="ViewModel\BangDieuKhienViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BienBanViewModel.cs" />
+    <Compile Include="ViewModel\BoPhanViewModel.cs" />
+    <Compile Include="ViewModel\CongTrinhViewModel.cs" />
+    <Compile Include="Model\DataNXT.cs" />
+    <Compile Include="ViewModel\DonViTinhViewModel.cs" />
+    <Compile Include="ViewModel\DuDauVatTuViewModel.cs" />
+    <Compile Include="ViewModel\KhoViewModel.cs" />
+    <Compile Include="ViewModel\LapBaoCaoNXTViewModel.cs" />
+    <Compile Include="ViewModel\LapSoChiTietViewModel.cs" />
+    <Compile Include="ViewModel\LapTheKhoViewModel.cs" />
+    <Compile Include="ViewModel\LoaiVatTuViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ChucNangViewModel.cs" />
+    <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\NguoiGiaoViewModel.cs" />
+    <Compile Include="ViewModel\NguoiNhanViewModel.cs" />
+    <Compile Include="ViewModel\NhaCungCapViewModel.cs" />
+    <Compile Include="ViewModel\NhanVienViewModel.cs" />
+    <Compile Include="ViewModel\NhomChucNangViewModel.cs" />
+    <Compile Include="ViewModel\NotifyViewModel.cs" />
+    <Compile Include="ViewModel\PhieuNhapViewModel.cs" />
+    <Compile Include="ViewModel\PhieuXuatViewModel.cs" />
+    <Compile Include="ViewModel\QuanTriNguoiDungViewModel.cs" />
+    <Compile Include="ViewModel\TableViewModel.cs" />
+    <Compile Include="ViewModel\TaiKhoanViewModel.cs" />
+    <Compile Include="ViewModel\VatTuViewModel.cs" />
+    <Compile Include="View\BangDieuKhien.xaml.cs">
+      <DependentUpon>BangDieuKhien.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BienBanDialog.xaml.cs">
+      <DependentUpon>BienBanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BienBanUC.xaml.cs">
+      <DependentUpon>BienBanUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BoPhanDialog.xaml.cs">
+      <DependentUpon>BoPhanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BoPhanUC.xaml.cs">
+      <DependentUpon>BoPhanUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CongTrinhDialog.xaml.cs">
+      <DependentUpon>CongTrinhDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CongTrinhUC.xaml.cs">
+      <DependentUpon>CongTrinhUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CT_BienBanDialog.xaml.cs">
+      <DependentUpon>CT_BienBanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CT_PhieuNhapDialog.xaml.cs">
+      <DependentUpon>CT_PhieuNhapDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CT_PhieuXuatDialog.xaml.cs">
+      <DependentUpon>CT_PhieuXuatDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DonViTinhDialog.xaml.cs">
+      <DependentUpon>DonViTinhDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DonViTinhUC.xaml.cs">
+      <DependentUpon>DonViTinhUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DuDauVatTuDialog.xaml.cs">
+      <DependentUpon>DuDauVatTuDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DuDauVatTuUC.xaml.cs">
+      <DependentUpon>DuDauVatTuUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\KhoCalculateDialog.xaml.cs">
+      <DependentUpon>KhoCalculateDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\KhoDialog.xaml.cs">
+      <DependentUpon>KhoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\KhoUC.xaml.cs">
+      <DependentUpon>KhoUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LapBaoCaoNXTDialog.xaml.cs">
+      <DependentUpon>LapBaoCaoNXTDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LapSoChiTietDialog.xaml.cs">
+      <DependentUpon>LapSoChiTietDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LapTheKhoDialog.xaml.cs">
+      <DependentUpon>LapTheKhoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoaiVatTuDialog.xaml.cs">
+      <DependentUpon>LoaiVatTuDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoaiVatTuUC.xaml.cs">
+      <DependentUpon>LoaiVatTuUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiDungDialog.xaml.cs">
+      <DependentUpon>NguoiDungDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiGiaoDialog.xaml.cs">
+      <DependentUpon>NguoiGiaoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiGiaoUC.xaml.cs">
+      <DependentUpon>NguoiGiaoUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiNhanDialog.xaml.cs">
+      <DependentUpon>NguoiNhanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiNhanUC.xaml.cs">
+      <DependentUpon>NguoiNhanUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NhaCungCapDialog.xaml.cs">
+      <DependentUpon>NhaCungCapDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NhaCungCapUC.xaml.cs">
+      <DependentUpon>NhaCungCapUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NhanVienDialog.xaml.cs">
+      <DependentUpon>NhanVienDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NhanVienUC.xaml.cs">
+      <DependentUpon>NhanVienUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuNhapDialog.xaml.cs">
+      <DependentUpon>PhieuNhapDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuNhapUC.xaml.cs">
+      <DependentUpon>PhieuNhapUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuXuatDialog.xaml.cs">
+      <DependentUpon>PhieuXuatDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuXuatUC.xaml.cs">
+      <DependentUpon>PhieuXuatUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\QuanTriNguoiDung.xaml.cs">
+      <DependentUpon>QuanTriNguoiDung.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaiKhoanDialog.xaml.cs">
+      <DependentUpon>TaiKhoanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaiKhoanUC.xaml.cs">
+      <DependentUpon>TaiKhoanUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VatTuDialog.xaml.cs">
+      <DependentUpon>VatTuDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VatTuUC.xaml.cs">
+      <DependentUpon>VatTuUC.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resource\Color.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\ViewModelResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BangDieuKhien.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BienBanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BienBanUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BoPhanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BoPhanUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CongTrinhDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CongTrinhUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CT_BienBanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CT_PhieuNhapDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CT_PhieuXuatDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DonViTinhDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DonViTinhUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DuDauVatTuDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DuDauVatTuUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\KhoCalculateDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\KhoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\KhoUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LapBaoCaoNXTDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LapSoChiTietDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LapTheKhoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoaiVatTuDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoaiVatTuUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiDungDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiGiaoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiGiaoUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiNhanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiNhanUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NhaCungCapDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NhaCungCapUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NhanVienDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NhanVienUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuNhapDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuNhapUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuXuatDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuXuatUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\QuanTriNguoiDung.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaiKhoanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaiKhoanUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\VatTuDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\VatTuUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resource\img\ke-toan-background.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets'))" />
+  </Target>
+</Project>

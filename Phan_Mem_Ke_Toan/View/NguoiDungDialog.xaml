@@ -1,0 +1,124 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.NguoiDungDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        xmlns:util="clr-namespace:Phan_Mem_Ke_Toan.Utils"
+        mc:Ignorable="d"
+        Height="500"
+        Width="400"
+        xmlns:valid="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{DynamicResource WindowStyle}"
+        DataContext="{StaticResource QuanTriNDVM}"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="White"
+        Name="dialog">
+    <StackPanel Margin="40,10,40,10">
+        <StackPanel x:Name="pn_valid_signUp">
+            <TextBox materialDesign:HintAssist.Hint="Tên đăng nhập"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     VerticalAlignment="Center"
+                     Margin="0,0,0,20">
+                <TextBox.Text>
+                    <Binding Path="accountSignUp.TenDangNhap"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <PasswordBox x:Name="signUpPW"
+                         Margin="0,0,0,20"
+                         materialDesign:HintAssist.Hint="Mật khẩu"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         util:PasswordBoxAssistant.BindPassword="True">
+                <util:PasswordBoxAssistant.BoundPassword>
+                    <Binding Path="accountSignUp.MatKhau"
+                             Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </util:PasswordBoxAssistant.BoundPassword>
+            </PasswordBox>
+            <PasswordBox Margin="0,0,0,20"
+                         materialDesign:HintAssist.Hint="Nhập lại mật khẩu"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         util:PasswordBoxAssistant.BindPassword="True">
+                <PasswordBox.Resources>
+                    <util:BindingProxy x:Key="TargetProxy"
+                                        Data="{Binding accountSignUp.MatKhau, Mode=TwoWay}" />
+                </PasswordBox.Resources>
+                <util:PasswordBoxAssistant.BoundPassword>
+                    <Binding Path="PasswordConfirm"
+                             Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                            <valid:MatchPassword ValidatesOnTargetUpdated="True">
+                                <valid:Password Value="{Binding Data, Source={StaticResource TargetProxy}}" />
+                            </valid:MatchPassword>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </util:PasswordBoxAssistant.BoundPassword>
+            </PasswordBox>
+            <TextBox materialDesign:HintAssist.Hint="Họ tên"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     VerticalAlignment="Center"
+                     Margin="0,0,0,30">
+                <TextBox.Text>
+                    <Binding Path="accountSignUp.HoTen"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <ComboBox materialDesign:HintAssist.Hint="Bộ phận"
+                      IsEditable="True"
+                      Margin="0,0,0,30"
+                      ItemsSource="{Binding ListBoPhan}"
+                      SelectedValuePath="MaBoPhan"
+                      DisplayMemberPath="TenBoPhan">
+                <ComboBox.SelectedValue>
+                    <Binding Path="accountSignUp.MaBoPhan"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ComboBox.SelectedValue>
+            </ComboBox>
+            <ComboBox materialDesign:HintAssist.Hint="Quyền đăng nhập"
+                      Margin="0,0,0,30">
+                <ComboBox.Text>
+                    <Binding Path="accountSignUp.Quyen"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ComboBox.Text>
+                <ComboBoxItem Content="admin" />
+                <ComboBoxItem Content="user" />
+            </ComboBox>
+        </StackPanel>
+
+        <DockPanel>
+            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Width="140"
+                    Content="Huỷ"
+                    IsCancel="True" />
+            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                    Width="140"
+                    Content="{Binding BtnContent}"
+                    Command="{Binding BtnCommand}"
+                    CommandParameter="{Binding ElementName=dialog}"
+                    HorizontalAlignment="Right" />
+        </DockPanel>
+    </StackPanel>
+</Window>

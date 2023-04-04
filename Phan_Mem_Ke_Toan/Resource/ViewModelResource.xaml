@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewmodel="clr-namespace:Phan_Mem_Ke_Toan.ViewModel">
+    <viewmodel:MainViewModel x:Key="MainVM" />
+    <viewmodel:DonViTinhViewModel x:Key="DonViTinhVM" />
+    <viewmodel:BoPhanViewModel x:Key="BoPhanVM" />
+    <viewmodel:CongTrinhViewModel x:Key="CongTrinhVM" />
+    <viewmodel:NhaCungCapViewModel x:Key="NhaCungCapVM" />
+    <viewmodel:LoaiVatTuViewModel x:Key="LoaiVatTuVM" />
+    <viewmodel:TaiKhoanViewModel x:Key="TaiKhoanVM" />
+    <viewmodel:NhanVienViewModel x:Key="NhanVienVM" />
+    <viewmodel:KhoViewModel x:Key="KhoVM" />
+    <viewmodel:VatTuViewModel x:Key="VatTuVM" />
+    <viewmodel:LoginViewModel x:Key="LoginVM" />
+    <viewmodel:QuanTriNguoiDungViewModel x:Key="QuanTriNDVM" />
+    <viewmodel:NguoiGiaoViewModel x:Key="NguoiGiaoVM" />
+    <viewmodel:NguoiNhanViewModel x:Key="NguoiNhanVM" />
+    <viewmodel:PhieuNhapViewModel x:Key="PhieuNhapVM" />
+    <viewmodel:PhieuXuatViewModel x:Key="PhieuXuatVM" />
+    <viewmodel:BienBanViewModel x:Key="BienBanVM" />
+    <viewmodel:LapTheKhoViewModel x:Key="LapTheKhoVM" />
+    <viewmodel:LapSoChiTietViewModel x:Key="LapSoChiTietVM" />
+    <viewmodel:LapBaoCaoNXTViewModel x:Key="NXTVM" />
+    <viewmodel:BangDieuKhienViewModel x:Key="BDKVM" />
+    <viewmodel:DuDauVatTuViewModel x:Key="DuDauVTVM" />
+</ResourceDictionary>

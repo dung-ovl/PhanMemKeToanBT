@@ -1,0 +1,306 @@
+﻿<UserControl x:Class="Phan_Mem_Ke_Toan.View.BangDieuKhien"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="700"
+             d:DesignWidth="1000"
+             Style="{DynamicResource WindowStyle}"
+             DataContext="{StaticResource BDKVM}">
+    <Grid>
+        <StackPanel Margin="20,15">
+            <TextBlock Text="Quy trình làm việc"
+                       FontWeight="Medium"
+                       Padding="0,0,0,15"
+                       Foreground="{DynamicResource PrimaryHueLightBrush}" />
+            <Separator Background="{DynamicResource DividerBrush}" />
+
+            <!--notify-->
+            <Grid Margin="0,15,0,0">
+                <TextBlock DataContext="{StaticResource PhieuNhapVM}"
+                           Text="{Binding notify.ContentNotify}"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource Success}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding notify.IsError}"
+                                             Value="true">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource DangerOrError}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock DataContext="{StaticResource PhieuXuatVM}"
+                           Text="{Binding notify.ContentNotify}"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource Success}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding notify.IsError}"
+                                             Value="true">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource DangerOrError}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+        <materialDesign:Card  Margin="50,100,50,60">
+            <Grid Margin="50,50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.6*" />
+                </Grid.ColumnDefinitions>
+
+                <!--Left-->
+                <Grid Grid.Column="0"
+                      Margin="0,50,0,50">
+
+                    <!--Nhập kho-->
+                    <DockPanel VerticalAlignment="Top">
+                        <Grid>
+                            <Button Content="{materialDesign:PackIcon HomeImportOutline, Size=40}"
+                                    Width="90"
+                                    Height="90"
+                                    BorderThickness="0"
+                                    Background="#C64A31"
+                                    Padding="0,0,0,15"
+                                    Command="{Binding Source={StaticResource PhieuNhapVM}, Path=AddCommand}" />
+                            <TextBlock Text="Nhập kho"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="White"
+                                       FontWeight="Medium"
+                                       TextAlignment="Center"
+                                       Padding="10" />
+                        </Grid>
+                        <Rectangle Fill="{DynamicResource PathBrush}"
+                                   Height="10" />
+                    </DockPanel>
+
+                    <Rectangle Fill="{DynamicResource PathBrush}"
+                               Width="10"
+                               HorizontalAlignment="Right"
+                               Margin="0,40" />
+
+                    <!--Xuất kho-->
+                    <DockPanel VerticalAlignment="Bottom">
+                        <Grid>
+                            <Button Content="{materialDesign:PackIcon HomeExportOutline, Size=40}"
+                                    Width="90"
+                                    Height="90"
+                                    BorderThickness="0"
+                                    Background="#5099B8"
+                                    Padding="0,0,0,15"
+                                    Command="{Binding Source={StaticResource PhieuXuatVM}, Path=AddCommand}" />
+                            <TextBlock Text="Xuất kho"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="White"
+                                       FontWeight="Medium"
+                                       TextAlignment="Center"
+                                       Padding="10" />
+                        </Grid>
+                        <Rectangle Fill="{DynamicResource PathBrush}"
+                                   Height="10" />
+                    </DockPanel>
+                </Grid>
+
+                <!--middle-->
+                <Grid Grid.Column="1">
+                    <Rectangle Fill="{DynamicResource PathBrush}"
+                               Height="10"
+                               Margin="0,0,10,0" />
+                    <Polygon Fill="{DynamicResource PathBrush}"
+                             Points="0,0 20,10, 0,20"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Center" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Tính giá trị trung bình-->
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="0"
+                                       Margin="50,60,0,5">
+                                <Grid DockPanel.Dock="Top">
+                                    <Button Content="{materialDesign:PackIcon Calculator, Size=50}"
+                                            Width="90"
+                                            Height="110"
+                                            BorderThickness="0"
+                                            Background="#3773E1"
+                                            Padding="0,0,0,30"
+                                            Command="{Binding CalculateCommand}" />
+                                    <TextBlock Text="Tính giá xuất kho"
+                                               VerticalAlignment="Bottom"
+                                               Foreground="White"
+                                               FontWeight="Medium"
+                                               TextAlignment="Center"
+                                               Padding="10"
+                                               Margin="10,0"
+                                               TextWrapping="Wrap" />
+                                </Grid>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <Polygon Fill="{DynamicResource PathBrush}"
+                                             Points="0,0,10,20,20,0"
+                                             DockPanel.Dock="Bottom"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Bottom" />
+                                    <Rectangle Fill="{DynamicResource PathBrush}"
+                                               Width="10"
+                                               DockPanel.Dock="Bottom" />
+                                </DockPanel>
+                            </DockPanel>
+                        </Grid>
+
+                        <!--Kiểm kê-->
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Row="1"
+                                       Margin="0,5,50,60">
+                                <Grid DockPanel.Dock="Bottom">
+                                    <Button Content="{materialDesign:PackIcon ClipboardCheck, Size=40}"
+                                            Width="90"
+                                            Height="110"
+                                            BorderThickness="0"
+                                            Background="#FF4500"
+                                            Padding="0,0,0,15"
+                                            Command="{Binding Source={StaticResource BienBanVM}, Path=AddCommand}"/>
+                                    <TextBlock Text="Kiểm kê"
+                                               VerticalAlignment="Bottom"
+                                               Foreground="White"
+                                               FontWeight="Medium"
+                                               TextAlignment="Center"
+                                               Padding="10" />
+                                </Grid>
+                                <DockPanel DockPanel.Dock="Bottom">
+                                    <Polygon Fill="{DynamicResource PathBrush}"
+                                             Points="20,20, 0,20, 10,0"
+                                             DockPanel.Dock="Top"
+                                             HorizontalAlignment="Center" />
+                                    <Rectangle Fill="{DynamicResource PathBrush}"
+                                               Width="10"
+                                               DockPanel.Dock="Top" />
+                                </DockPanel>
+                            </DockPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <!--right-->
+                <Grid Grid.Column="2">
+
+                    <!--Thẻ kho-->
+                    <DockPanel VerticalAlignment="Top">
+                        <Grid DockPanel.Dock="Right">
+                            <Button Content="{materialDesign:PackIcon CardText, Size=40}"
+                                    Width="110"
+                                    Height="90"
+                                    BorderThickness="0"
+                                    Background="#ffc400"
+                                    Padding="0,0,0,15"
+                                    Command="{Binding ShowTheKhoCommand}"/>
+                            <TextBlock Text="Thẻ kho"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="White"
+                                       FontWeight="Medium"
+                                       TextAlignment="Center"
+                                       Padding="10" />
+                        </Grid>
+                        <Polygon Fill="{DynamicResource PathBrush}"
+                                 Points="0,0 20,10, 0,20"
+                                 DockPanel.Dock="Right"
+                                 VerticalAlignment="Center" />
+                        <Rectangle Fill="{DynamicResource PathBrush}"
+                                   Height="10"
+                                   DockPanel.Dock="Right" />
+                    </DockPanel>
+
+                    <Rectangle Fill="{DynamicResource PathBrush}"
+                               Width="10"
+                               HorizontalAlignment="Left"
+                               Margin="0,40" />
+
+                    <!--Báo cáo vật tư-->
+                    <DockPanel VerticalAlignment="Center"
+                               Margin="0,0,30,0">
+                        <Grid DockPanel.Dock="Right">
+                            <Button Content="{materialDesign:PackIcon NotebookMultiple, Size=40}"
+                                    Width="110"
+                                    Height="90"
+                                    BorderThickness="0"
+                                    Background="#4DCC89"
+                                    Padding="0,0,0,15"
+                                    Command="{Binding ShowBCVatTuCommand}"/>
+                            <TextBlock Text="Báo cáo vật tư"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="White"
+                                       FontWeight="Medium"
+                                       TextAlignment="Center"
+                                       Margin="10" />
+                        </Grid>
+                        <Polygon Fill="{DynamicResource PathBrush}"
+                                 Points="0,0 20,10, 0,20"
+                                 DockPanel.Dock="Right"
+                                 VerticalAlignment="Center" />
+                        <Rectangle Fill="{DynamicResource PathBrush}"
+                                   Height="10"
+                                   DockPanel.Dock="Right" />
+                    </DockPanel>
+
+                    <!--Sổ cái-->
+                    <DockPanel VerticalAlignment="Bottom">
+                        <Grid DockPanel.Dock="Right"
+                              Width="110">
+                            <Button Content="{materialDesign:PackIcon BookOpen, Size=40}"
+                                    Width="110"
+                                    Height="90"
+                                    BorderThickness="0"
+                                    Background="#275090"
+                                    Padding="0,0,0,35"
+                                    Command="{Binding ShowBCNhapXuatTonCommand}"/>
+                            <TextBlock Text="Báo cáo nhập xuất tồn"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="White"
+                                       FontWeight="Medium"
+                                       TextAlignment="Center"
+                                       Margin="10"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                        <Polygon Fill="{DynamicResource PathBrush}"
+                                 Points="0,0 20,10, 0,20"
+                                 DockPanel.Dock="Right"
+                                 VerticalAlignment="Center" />
+                        <Rectangle Fill="{DynamicResource PathBrush}"
+                                   Height="10"
+                                   DockPanel.Dock="Right" />
+                    </DockPanel>
+                </Grid>
+
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="Phan_Mem_Ke_Toan.View.DonViTinhUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Style="{DynamicResource WindowStyle}"
+             DataContext="{StaticResource DonViTinhVM}">
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Text="DANH SÁCH ĐƠN VỊ TÍNH"
+                       FontWeight="SemiBold"
+                       FontSize="15"
+                       Padding="20,20,0,15" />
+            <Grid Grid.Column="1"
+                  Width="120"
+                  Margin="15,10,0,10">
+            </Grid>
+            <Grid Grid.Column="2"
+                  Width="120"
+                  Margin="15,10,30,10">
+                <Button Command="{Binding AddCommand}"
+                        Content="Thêm mới"
+                        Padding="10 0 00 0"
+                        Background="{DynamicResource Green}"
+                        BorderThickness="0" />
+                <materialDesign:PackIcon Kind="PlusCircle"
+                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                         VerticalAlignment="Center"
+                                         Width="30"
+                                         Height="20" />
+            </Grid>
+        </Grid>
+        <Separator Background="Silver" />
+        <DataGrid x:Name="listview"
+                  Height="450"
+                  ItemsSource="{Binding ListData}"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="FocusVisualStyle"
+                            Value="{x:Null}" />
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding MaDVT}"
+                                    IsReadOnly="True"
+                                    Header="Mã đơn vị tính"
+                                    Width="auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                            <Setter Property="Margin"
+                                    Value="5 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding TenDVT}"
+                                    IsReadOnly="True"
+                                    Header="Tên đơn vị tính"
+                                    Width="auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                            <Setter Property="Margin"
+                                    Value="5 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.EditCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5 0"
+                                    Padding="0">
+                                <materialDesign:PackIcon Kind="Pencil"
+                                                         Foreground="#ffc720" />
+
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.DeleteItemCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="0"
+                                    Padding="0">
+                                <materialDesign:PackIcon Kind="Delete"
+                                                         Foreground="{DynamicResource Red}" />
+
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</UserControl>

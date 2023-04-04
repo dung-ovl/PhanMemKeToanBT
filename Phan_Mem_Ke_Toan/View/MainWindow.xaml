@@ -1,0 +1,348 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=DotNetProjects.DataVisualization.Toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        MinWidth="1400"
+        MinHeight="800"
+        Style="{DynamicResource WindowStyle}"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        DataContext="{StaticResource MainVM}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding ClosedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <DockPanel Background="{DynamicResource MainHighBrush}">
+        <!--menu-->
+        <StackPanel x:Name="nav_pnl"
+                    Width="65"
+                    Background="{DynamicResource SecondaryHueMidBrush}">
+            <ToggleButton HorizontalAlignment="Right"
+                          Margin="0,5,14,5"
+                          Cursor="Hand"
+                          Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
+                          Foreground="{DynamicResource ItemMenuActive}">
+                <ToggleButton.Triggers>
+                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                        <BeginStoryboard>
+                            <Storyboard x:Name="HideStackPanel">
+                                <DoubleAnimation Storyboard.TargetName="nav_pnl"
+                                                 Storyboard.TargetProperty="Width"
+                                                 BeginTime="0:0:0"
+                                                 From="230"
+                                                 To="65"
+                                                 Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                        <BeginStoryboard>
+                            <Storyboard x:Name="ShowStackPanel">
+                                <DoubleAnimation Storyboard.TargetName="nav_pnl"
+                                                 Storyboard.TargetProperty="Width"
+                                                 BeginTime="0:0:0"
+                                                 From="65"
+                                                 To="230"
+                                                 Duration="0:0:0.3" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </ToggleButton.Triggers>
+            </ToggleButton>
+            <ListBox x:Name="menu"
+                     ItemsSource="{Binding Menu}"
+                     Cursor="Hand"
+                     SelectedIndex="{Binding SelectedIndexMenu, UpdateSourceTrigger=PropertyChanged}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <DockPanel ToolTip="{Binding text}">
+                                        <!--Menu Icon-->
+                                        <materialDesign:PackIcon  Name="iconMenu"
+                                                                  Kind="{Binding icon}"
+                                                                  Height="30"
+                                                                  Width="30"
+                                                                  Margin="18,10,18,10">
+                                            <materialDesign:PackIcon.Style>
+                                                    <Style TargetType="{x:Type materialDesign:PackIcon}">
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource ItemMenuNormal}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                         Value="True">
+                                                                <Setter Property="Foreground"
+                                                                        Value="{DynamicResource ItemMenuActive}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </materialDesign:PackIcon.Style>
+                                        </materialDesign:PackIcon>
+
+                                        <!--Menu Text-->
+                                        <TextBlock Text="{Binding text}"
+                                                   VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="Foreground"
+                                                            Value="{DynamicResource ItemMenuNormal}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                     Value="True">
+                                                            <Setter Property="FontWeight"
+                                                                    Value="Bold" />
+                                                            <Setter Property="Foreground"
+                                                                    Value="{DynamicResource ItemMenuActive}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <DockPanel.Style>
+                                            <Style TargetType="{x:Type DockPanel}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                 Value="True">
+                                                        <Setter Property="Background"
+                                                                Value="{DynamicResource SecondaryHueLightBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                 Value="True">
+                                                        <Setter Property="Background"
+                                                                Value="{DynamicResource PrimaryHueMidBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DockPanel.Style>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </StackPanel>
+
+        <!--work table-->
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Background="{DynamicResource MainLowBrush}"
+                        Width="230">
+                <TextBlock Text="{Binding TitleOption}"
+                           Padding="15,16,0,16"
+                           FontWeight="Bold" />
+
+                <!--page working-->
+                <Expander Header="Bàn làm việc"
+                          Background="#E8E8E8"
+                          Foreground="#787878"
+                          FontWeight="Bold"
+                          IsExpanded="True">
+                    <ListBox ItemsSource="{Binding PageWorkings}"
+                             Background="{DynamicResource MainLowBrush}"
+                             SelectedIndex="{Binding SelectedIndexWorking}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <DockPanel LastChildFill="False"
+                                                       Cursor="Hand">
+                                                <TextBlock Text="{Binding text}"
+                                                           Padding="30,10,0,10"
+                                                           FontWeight="Medium">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                             Value="True">
+                                                                    <Setter Property="Foreground"
+                                                                            Value="{DynamicResource PrimaryHueMidBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <Button DockPanel.Dock="Right"
+                                                        Style="{StaticResource MaterialDesignIconButton}"
+                                                        Height="20"
+                                                        Width="20"
+                                                        Command="{Binding DeletePageWorkingCommand}"
+                                                        Margin="5,0,20,0">
+                                                    <materialDesign:PackIcon Kind="Delete"
+                                                                             Foreground="{DynamicResource DangerOrError}"
+                                                                             VerticalAlignment="Center"
+                                                                             Width="14" />
+                                                </Button>
+
+                                                <DockPanel.Style>
+                                                    <Style TargetType="{x:Type DockPanel}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                         Value="True">
+                                                                <Setter Property="Background"
+                                                                        Value="#CCCEDC" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DockPanel.Style>
+                                            </DockPanel>
+
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Expander>
+
+                <!--option-->
+                <ItemsControl ItemsSource="{Binding NhomChucNangVMs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}"
+                                           Padding="15,10,10,10"
+                                           Background="#E8E8E8"
+                                           FontWeight="Bold"
+                                           Foreground="#787878" />
+                                <ListBox ItemsSource="{Binding ChucNangVMs}">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                        <DockPanel Cursor="Hand">
+                                                            <materialDesign:PackIcon Kind="{Binding icon}"
+                                                                                     Margin="15,10,10,10"
+                                                                                     Width="24"
+                                                                                     Height="24"
+                                                                                     Foreground="{Binding iconColor}" />
+                                                            <TextBlock Text="{Binding text}"
+                                                                       VerticalAlignment="Center" />
+                                                            <DockPanel.Style>
+                                                                <Style TargetType="{x:Type DockPanel}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                                                                     Value="True">
+                                                                            <Setter Property="Background"
+                                                                                    Value="#CCCEDC" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </DockPanel.Style>
+                                                            <i:Interaction.Triggers>
+                                                                <i:EventTrigger EventName="MouseDown">
+                                                                    <i:InvokeCommandAction Command="{Binding SelectPageCommand}" />
+                                                                </i:EventTrigger>
+                                                            </i:Interaction.Triggers>
+                                                        </DockPanel>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!--page-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="250" />
+            </Grid.ColumnDefinitions>
+            <Grid Margin="0,2,0,0"
+                  Grid.Column="0">
+                <UserControl Content="{Binding CurrentPage}" />
+            </Grid>
+
+            <!--chart-->
+            <StackPanel Grid.Column="1"
+                        Background="White"
+                        Margin="2">
+                <dvc:Chart BorderThickness="0"
+                           Title="{Binding TitleNhap}"
+                           Height="300">
+                    <dvc:Chart.Axes>
+                        <dvc:CategoryAxis Orientation="X" />
+                        <dvc:CategoryAxis Orientation="Y"
+                                          Title="Triệu đồng" />
+                    </dvc:Chart.Axes>
+                    <dvc:Chart.LegendStyle>
+                        <Style TargetType="Control">
+                            <Setter Property="Width"
+                                    Value="0" />
+                            <Setter Property="Height"
+                                    Value="0" />
+                        </Style>
+                    </dvc:Chart.LegendStyle>
+                    <dvc:Chart.Series>
+                        <dvc:ColumnSeries ItemsSource="{Binding ListNhap}"
+                                          DependentValuePath="TongTT"
+                                          IndependentValuePath="TenVT">
+                            <dvc:ColumnSeries.DataPointStyle>
+                                <Style TargetType="dvc:ColumnDataPoint">
+                                    <Setter Property="Background"
+                                            Value="#5b9bd5" />
+                                    <Setter Property="BorderBrush"
+                                            Value="#5b9bd5" />
+                                    <Setter Property="BorderThickness"
+                                            Value="100" />
+                                </Style>
+                            </dvc:ColumnSeries.DataPointStyle>
+                        </dvc:ColumnSeries>
+                    </dvc:Chart.Series>
+                </dvc:Chart>
+                <dvc:Chart BorderThickness="0"
+                           Title="{Binding TitleXuat}"
+                           Margin="0,1"
+                           Height="300">
+                    <dvc:Chart.Axes>
+                        <dvc:CategoryAxis Orientation="X" />
+                        <dvc:CategoryAxis Orientation="Y"
+                                          Title="Triệu đồng" />
+                    </dvc:Chart.Axes>
+                    <dvc:Chart.LegendStyle>
+                        <Style TargetType="Control">
+                            <Setter Property="Width"
+                                    Value="0" />
+                            <Setter Property="Height"
+                                    Value="0" />
+                        </Style>
+                    </dvc:Chart.LegendStyle>
+                    <dvc:Chart.Series>
+                        <dvc:ColumnSeries ItemsSource="{Binding ListXuat}"
+                                          DependentValuePath="TongTT"
+                                          IndependentValuePath="TenVT">
+                            <dvc:ColumnSeries.DataPointStyle>
+                                <Style TargetType="dvc:ColumnDataPoint">
+                                    <Setter Property="BorderBrush"
+                                            Value="{StaticResource Red}" />
+                                    <Setter Property="BorderThickness"
+                                            Value="100" />
+                                </Style>
+                            </dvc:ColumnSeries.DataPointStyle>
+                        </dvc:ColumnSeries>
+                    </dvc:Chart.Series>
+                </dvc:Chart>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

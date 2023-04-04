@@ -1,0 +1,158 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.DuDauVatTuDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        mc:Ignorable="d"
+        Title="DuDauVatTuDialog"
+        Height="320"
+        Width="450"
+        xmlns:valid="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{DynamicResource WindowStyle}"
+        DataContext="{StaticResource DuDauVTVM}"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        MinHeight="300"
+        MinWidth="400">
+    <Window.Resources>
+        <converter:MoneyVNConvert x:Key="moneyConverter" />
+        <converter:DisplayComboboxConvert x:Key="diplayCbCovert" />
+    </Window.Resources>
+    <DockPanel Background="White">
+        <DockPanel DockPanel.Dock="Top"
+                   LastChildFill="False">
+            <TextBlock Text="{Binding TitleDialog}"
+                       FontSize="18"
+                       Padding="20,10,10,10" />
+            <Button DockPanel.Dock="Right"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Margin="0,0,5,0"
+                    IsCancel="True">
+                <materialDesign:PackIcon Kind="Close"
+                                         Foreground="DimGray" />
+            </Button>
+        </DockPanel>
+        <DockPanel LastChildFill="False"
+                   Margin="20,0,20,20">
+            <Separator Background="{DynamicResource DividerBrush}"
+                       DockPanel.Dock="Top" />
+
+            <StackPanel DockPanel.Dock="Top"
+                        Margin="20,10,20,40"
+                        Name="dialog">
+                <DatePicker materialDesign:HintAssist.Hint="Ngày"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            Margin="0,0,0,15">
+                    <DatePicker.SelectedDate>
+                        <Binding Path="DuDauVTModel.Ngay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <valid:DateValidRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DatePicker.SelectedDate>
+                </DatePicker>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"
+                                Margin="0,0,10,0">
+                        <ComboBox ItemsSource="{Binding ListKho}"
+                                  SelectedValuePath="MaKho"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  materialDesign:HintAssist.Hint="Kho"
+                                  Margin="0,0,0,15">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="DuDauVTModel.MaKho"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource diplayCbCovert}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBox materialDesign:HintAssist.Hint="Số lượng"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+                            <TextBox.Text>
+                                <Binding Path="DuDauVTModel.SoLuong"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <valid:FloatNumber ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"
+                                Margin="10 0 0 0">
+                        <ComboBox ItemsSource="{Binding ListVT}"
+                                  SelectedValuePath="MaVT"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  materialDesign:HintAssist.Hint="Vật tư"
+                                  Margin="0,0,0,15">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="DuDauVTModel.MaVT"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource diplayCbCovert}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBox materialDesign:HintAssist.Hint="Đơn giá (VND)"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 VerticalAlignment="Center">
+                            <TextBox.Text>
+                                <Binding Path="DuDauVTModel.DonGia"
+                                         UpdateSourceTrigger="PropertyChanged"
+                                         Converter="{StaticResource moneyConverter}">
+                                    <Binding.ValidationRules>
+                                        <valid:MoneyValidRule ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+            <DockPanel DockPanel.Dock="Right"
+                       VerticalAlignment="Bottom"
+                       LastChildFill="False">
+                <Button Command="{Binding BtnCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{Binding BtnContent}"
+                        Width="100"
+                        DockPanel.Dock="Right"
+                        Margin="10 0 0 0"
+                        Background="{DynamicResource Blue}">
+
+                </Button>
+                <Button Content="Huỷ"
+                        Width="100"
+                        DockPanel.Dock="Right"
+                        Background="Transparent"
+                        Foreground="{DynamicResource TitleDarkBrush}"
+                        BorderThickness="0"
+                        IsCancel="True" />
+            </DockPanel>
+        </DockPanel>
+    </DockPanel>
+</Window>

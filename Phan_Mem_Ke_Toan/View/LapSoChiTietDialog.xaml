@@ -1,0 +1,129 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.LapSoChiTietDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        mc:Ignorable="d"
+        Title="LapSoChiTietDialog"
+        Height="350"
+        Width="400"
+        xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        DataContext="{StaticResource LapSoChiTietVM}"
+        Style="{DynamicResource WindowStyle}"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+    <DockPanel Name="dialog"
+               Background="White">
+        <DockPanel DockPanel.Dock="Top"
+                   LastChildFill="False">
+            <TextBlock Text="Thông tin sổ chi tiết vật tư"
+                       FontSize="18"
+                       Padding="10" />
+            <Button DockPanel.Dock="Right"
+                    VerticalAlignment="Center"
+                    Margin="15 0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="5"
+                    IsCancel="True">
+                <materialDesign:PackIcon Kind="Close"
+                                         Foreground="DimGray" />
+            </Button>
+        </DockPanel>
+        <Separator Background="Silver" />
+        <StackPanel DockPanel.Dock="Top">
+            <StackPanel Margin="0 5 0 0">
+                <TextBlock Margin="15 0 0 5">Tên vật tư</TextBlock>
+                <ComboBox ItemsSource="{Binding ListVT}"
+                          SelectedValuePath="MaVT"
+                          DisplayMemberPath="TenVT"
+                          HorizontalContentAlignment="Left"
+                          Margin="15 0"
+                          IsEditable="True">
+                    <ComboBox.SelectedValue>
+                        <Binding Path="selectedMaVT"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <rule:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Margin="0 25 0 10">
+                <TextBlock Margin="15 0 0 5">Tên kho</TextBlock>
+                <ComboBox ItemsSource="{Binding ListKho}"
+                          SelectedValuePath="MaKho"
+                          DisplayMemberPath="TenKho"
+                          HorizontalContentAlignment="Left"
+                          Margin="15 0"
+                          IsEditable="True">
+                    <ComboBox.SelectedValue>
+                        <Binding Path="selectedMaKho"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <rule:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                </ComboBox>
+            </StackPanel>
+            <DockPanel Margin="0 20 0 0">
+                <TextBlock Margin="15 0 0 0"
+                           VerticalAlignment="Center">Tháng</TextBlock>
+                <ComboBox ItemsSource="{Binding ListMonth}"
+                          HorizontalContentAlignment="Left"
+                          Margin="15 0"
+                          IsEditable="True"
+                          Width="110"
+                          HorizontalAlignment="Left">
+                    <ComboBox.SelectedValue>
+                        <Binding Path="selectedMonth"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                </ComboBox>
+                <TextBlock Margin="15 0 0 0"
+                           VerticalAlignment="Center">Năm</TextBlock>
+                <ComboBox ItemsSource="{Binding ListYear}"
+                          HorizontalContentAlignment="Left"
+                          Margin="15 0"
+                          IsEditable="True"
+                          Width="120"
+                          HorizontalAlignment="Left">
+                    <ComboBox.SelectedValue>
+                        <Binding Path="selectedYear"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                </ComboBox>
+            </DockPanel>
+        </StackPanel>
+        <DockPanel DockPanel.Dock="Bottom"
+                   LastChildFill="False"
+                   Margin="15 20">
+            <Grid DockPanel.Dock="Right"
+                  Width="150">
+                <Button Command="{Binding ExportCommand}"
+                        Content="Xuất file Word"
+                        Background="{DynamicResource Blue}"
+                        BorderThickness="0"
+                        Padding="20 0 0 0 " />
+                <materialDesign:PackIcon Kind="FileWordBox"
+                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                         VerticalAlignment="Center"
+                                         Width="30"
+                                         Height="20" />
+            </Grid>
+            <Button Content="Huỷ"
+                    Width="100"
+                    DockPanel.Dock="Right"
+                    Background="Transparent"
+                    Foreground="{DynamicResource TitleDarkBrush}"
+                    BorderThickness="0"
+                    IsCancel="True" />
+        </DockPanel>
+    </DockPanel>
+</Window>

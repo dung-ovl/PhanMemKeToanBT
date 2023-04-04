@@ -1,0 +1,107 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.CongTrinhDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        mc:Ignorable="d"
+        Title="CongTrinhDialog" Height="360" Width="400"
+        xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{DynamicResource WindowStyle}"
+        DataContext="{StaticResource CongTrinhVM}"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        MinHeight="360"
+        MinWidth="400">
+    <DockPanel Name="dialog"
+               Background="White">
+        <DockPanel DockPanel.Dock="Top"
+                   LastChildFill="False">
+            <TextBlock Text="{Binding TitleDialog}"
+                       FontSize="18"
+                       Padding="10" />
+            <Button DockPanel.Dock="Right"
+                    VerticalAlignment="Center"
+                    Margin="15 0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="5"
+                    IsCancel="True">
+                <materialDesign:PackIcon Kind="Close"
+                                         Foreground="DimGray" />
+            </Button>
+        </DockPanel>
+        <Separator Background="Silver" />
+
+        <TextBox DockPanel.Dock="Top"
+                 materialDesign:HintAssist.Hint="Mã công trình"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 VerticalAlignment="Center"
+                 Margin="15 10"
+                 IsEnabled="False"
+                 Visibility="{Binding tbVisibility}">
+            <TextBox.Text>
+                <Binding Path="txtMaCongTrinh"
+                         UpdateSourceTrigger="PropertyChanged">
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox DockPanel.Dock="Top"
+                 materialDesign:HintAssist.Hint="Tên công trình"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 VerticalAlignment="Center"
+                 Margin="15 10">
+            <TextBox.Text>
+                <Binding Path="txtTenCongTrinh"
+                         UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <rule:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox DockPanel.Dock="Top"
+                 materialDesign:HintAssist.Hint="Địa chỉ"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 VerticalAlignment="Center"
+                 Margin="15 10">
+            <TextBox.Text>
+                <Binding Path="txtDiaChi"
+                         UpdateSourceTrigger="PropertyChanged">
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox DockPanel.Dock="Top"
+                 materialDesign:HintAssist.Hint="Mô tả"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 VerticalAlignment="Center"
+                 Margin="15 10">
+            <TextBox.Text>
+                <Binding Path="txtMoTa"
+                         UpdateSourceTrigger="PropertyChanged">
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <DockPanel DockPanel.Dock="Bottom"
+                   LastChildFill="False"
+                   Margin="15 20">
+            <Button Command="{Binding BtnCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Content="{Binding BtnContent}"
+                    Width="100"
+                    DockPanel.Dock="Right"
+                    Margin="10 0 0 0"
+                    Background="{DynamicResource Blue}">
+
+            </Button>
+            <Button Content="Huỷ"
+                    Width="100"
+                    DockPanel.Dock="Right"
+                    Background="Transparent"
+                    Foreground="{DynamicResource TitleDarkBrush}"
+                    BorderThickness="0"
+                    IsCancel="True" />
+        </DockPanel>
+    </DockPanel>
+</Window>
