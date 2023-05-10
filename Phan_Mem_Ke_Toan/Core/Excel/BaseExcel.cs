@@ -104,7 +104,8 @@ namespace Phan_Mem_Ke_Toan.Core.Excel
             {
 
             }
-            finally
+            //Do it when app closed
+            /*finally
             {
                 if (sheet != null)
                     Marshal.ReleaseComObject(sheet);
@@ -113,7 +114,7 @@ namespace Phan_Mem_Ke_Toan.Core.Excel
                 if (excel != null)
                     Marshal.ReleaseComObject(excel);
                 excel = null;
-            }
+            }*/
 
             GC.SuppressFinalize(this);
         }

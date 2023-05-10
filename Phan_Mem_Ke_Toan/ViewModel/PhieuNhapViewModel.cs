@@ -1,4 +1,5 @@
-﻿using Phan_Mem_Ke_Toan.API;
+﻿using Microsoft.Expression.Interactivity.Core;
+using Phan_Mem_Ke_Toan.API;
 using Phan_Mem_Ke_Toan.Model;
 using Phan_Mem_Ke_Toan.ValidRule;
 using Phan_Mem_Ke_Toan.View;
@@ -19,6 +20,8 @@ using MessageBox = System.Windows.MessageBox;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using Phan_Mem_Ke_Toan.Core.Excel.Implements.Warehouse;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
@@ -125,6 +128,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         public ICommand ExportCommand { get; set; }
         public ICommand ShowDetailCommand { get; set; }
         public ICommand AddCommandCT { get; set; }
+        public ICommand AddCommandExcel { get; set; }
         public ICommand DeleteItemCommandCT { get; set; }
 
 
@@ -407,6 +411,57 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 };
                 ListDataCT.Add(ct);
                 OnPropertyChanged("ListVTSelect");
+            });
+
+            AddCommandExcel = new RelayCommand<object>(
+                (p) => true,
+                (p) =>
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "File excel|*.xls;*.xlsx";
+                if(openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    using(var warehouse = new WarehouseExcel(openFileDialog.FileName))
+                    {
+                        var header = new WarehouseHeaderModel(warehouse.ReadHeader());
+                        var records = warehouse.ReadRecords().Select(item => new WarehouseRecordModel(item)).Select(item => new CT_PhieuNhapDetail
+                        {
+                            MaSo = 0,
+                            SoPhieu = header.SoPhieu,
+                            MaVT = item.MaVatTu,
+                            TenVT = item.TenVatTu,
+                            TenDVT = item.DonViTinh,
+                            MaTK = item.TaiKhoanNo,
+                            SLSoSach = Convert.ToDouble(item.SoLuongSoSach),
+                            SLThucTe = Convert.ToDouble(item.SoLuongThucTe),
+                            DonGia = Convert.ToDecimal(item.DonGia),
+                            ThanhTien = 0
+                        }).ToArray();
+                        foreach(var record in records)
+                        {
+                            ListDataCT.Add(record);
+                        }
+                        txtSoPhieu = header.SoPhieu;
+                        selectedMaNguoiGiao = header.NguoiGiao;
+                        selectedMaKho = header.NhapVaoKho;
+                        if (DateTime.TryParse(header.NgayNhap, out DateTime resut))
+                            selectedNgayNhap = resut;
+                        txtTenNCC = header.NhaCungCap;
+                        txtChungTuLQ = header.ChungTuLienQuan;
+                        selectedTKCo = header.TaiKhoanCo;
+                        txtLyDo = header.LyDo;
+                    }
+                    /*CT_PhieuNhapDetail ct = new CT_PhieuNhapDetail()
+                    {
+                        SoPhieu = txtSoPhieu,
+                        MaVT = selectedVT.MaVT,
+                        TenVT = selectedVT.TenVT,
+                        TenDVT = selectedVT.TenDVT,
+                        MaTK = selectedVT.MaTK,
+                    };*/
+                    /*ListDataCT.Add(ct);*/
+                    OnPropertyChanged("ListVTSelect");
+                }
             });
 
             DeleteItemCommandCT = new RelayCommand<object>((p) => true, (p) =>

@@ -152,6 +152,10 @@
                     <Button Content="Thêm chi tiết"
                             Background="{DynamicResource Green}"
                             Command="{Binding AddCommandCT}" />
+                    <Button Content="Thêm bằng Excel"
+                            Margin="10,0,0,0"
+                            Background="{DynamicResource Green}"
+                            Command="{Binding AddCommandExcel}"/>
                 </DockPanel>
             </DockPanel>
             <Grid>

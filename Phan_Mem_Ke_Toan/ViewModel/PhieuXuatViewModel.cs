@@ -1,4 +1,5 @@
-﻿using Phan_Mem_Ke_Toan.API;
+﻿using Microsoft.Expression.Interactivity.Core;
+using Phan_Mem_Ke_Toan.API;
 using Phan_Mem_Ke_Toan.Model;
 using Phan_Mem_Ke_Toan.ValidRule;
 using Phan_Mem_Ke_Toan.View;
@@ -125,6 +126,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         public ICommand ExportCommand { get; set; }
         public ICommand ShowDetailCommand { get; set; }
         public ICommand AddCommandCT { get; set; }
+        public ICommand AddCommandExcel { get; set; }
         public ICommand DeleteItemCommandCT { get; set; }
 
         private string _search;
@@ -412,6 +414,20 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             });
 
             AddCommandCT = new RelayCommand<object>((p) => selectedVT != null, (p) =>
+            {
+                CT_PhieuXuatDetail ct = new CT_PhieuXuatDetail()
+                {
+                    SoPhieu = txtSoPhieu,
+                    MaVT = selectedVT.MaVT,
+                    TenVT = selectedVT.TenVT,
+                    TenDVT = selectedVT.TenDVT,
+                    MaTK = selectedVT.MaTK,
+                };
+                ListDataCT.Add(ct);
+                OnPropertyChanged("ListVTSelect");
+            });
+
+            AddCommandExcel = new RelayCommand<object>((p) => selectedVT != null, (p) =>
             {
                 CT_PhieuXuatDetail ct = new CT_PhieuXuatDetail()
                 {
