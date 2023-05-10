@@ -56,7 +56,6 @@ namespace Phan_Mem_Ke_Toan.API
 
     public class CRUD
     {
-        
         public static string GeneratePrimaryKey(string lastKey)
         {
             string key = lastKey;
