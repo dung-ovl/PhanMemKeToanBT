@@ -57,6 +57,11 @@ namespace Phan_Mem_Ke_Toan.Core.Excel.Implements.Warehouse
                 }
             });
             writeRange.set_Value(Type.Missing, convert);
+            writeRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White);
+            writeRange.Borders.Weight = XlBorderWeight.xlThin;
+            var templateRange = sheet.get_Range((Range)sheet.Cells[H_OFFSET, 1], (Range)sheet.Cells[H_OFFSET, V_OFFSET]);
+            templateRange.Copy();
+            writeRange.PasteSpecial(XlPasteType.xlPasteFormats);
         }
 
         public object Read()

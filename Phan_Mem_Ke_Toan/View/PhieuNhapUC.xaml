@@ -146,7 +146,7 @@
                             </TextBlock.Style>
                         </TextBlock>
                     </Grid>
-                    
+
                     <Button Style="{StaticResource MaterialDesignFlatButton}"
                             Content="Hiển thị tất cả"
                             HorizontalAlignment="Right"
@@ -189,6 +189,17 @@
                                              ToolTip="Xuất file Word">
                                         <materialDesign:PackIcon Kind="FileWordBox"
                                                                  Foreground="#275090"
+                                                                 Width="18" />
+                                    </Button>
+                                    <Button  Style="{StaticResource MaterialDesignIconButton}"
+                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.ExportExcelCommand}"
+                                             CommandParameter="{Binding}"
+                                             Width="24"
+                                             Height="24"
+                                             ToolTip="Xuất file Excel">
+                                        <materialDesign:PackIcon Kind="FileExcelBox"
+                                                                 Foreground="#1d6f42"
                                                                  Width="18" />
                                     </Button>
                                 </DockPanel>

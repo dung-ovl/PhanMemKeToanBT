@@ -126,6 +126,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         }
 
         public ICommand ExportCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
         public ICommand ShowDetailCommand { get; set; }
         public ICommand AddCommandCT { get; set; }
         public ICommand AddCommandExcel { get; set; }
@@ -243,6 +244,64 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     return;
                 }
                 ExportPhieuNhap(selectedPhieuNhap);
+            });
+
+            ExportExcelCommand = new RelayCommand<object>((p) => p != null, (p) =>
+            {
+                var selectedPhieuNhap = p as PhieuNhapDetail;
+                GetListCT(selectedPhieuNhap.SoPhieu);
+                if (ListDataCT.Count == 0)
+                {
+                    notify.updateDataFail("Chưa có dữ liệu chi tiết, không thể xuất file");
+                    return;
+                }
+                if (selectedPhieuNhap.TongTien == 0)
+                {
+                    notify.updateDataFail("Yêu cầu tính giá xuất kho");
+                    return;
+                }
+                using (SaveFileDialog sfd = new SaveFileDialog() { FileName = $"Phiếu xuất kho ngày {selectedPhieuNhap.NgayNhap.ToString("dd-MM-yyyy")}", Filter = "File excel | *.xlsx", ValidateNames = true })
+                {
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        System.Threading.Tasks.Task.Factory.StartNew(() =>
+                        {
+                            using (var excel = new WarehouseExcel())
+                            {
+                                var header = new WarehouseHeaderBuilder()
+                                .AddChungTuLienQuan(selectedPhieuNhap.ChungTuLQ)
+                                .AddNhaCungCap(selectedPhieuNhap.MaNCC + " " + selectedPhieuNhap.TenNCC)
+                                .AddNgayNhap(selectedPhieuNhap.NgayNhap.ToString("dd/MM/yyyy"))
+                                .AddNguoiGiao(selectedPhieuNhap.MaNguoiGiao + " " + selectedPhieuNhap.TenNguoiGiao)
+                                .AddLyDo(selectedPhieuNhap.LyDo)
+                                .AddTaiKhoanCo(selectedPhieuNhap.TKCo)
+                                .AddSoPhieu(selectedPhieuNhap.SoPhieu)
+                                .AddNhapVaoKho(selectedPhieuNhap.MaKho + " " + selectedPhieuNhap.TenKho)
+                                .Build();
+                                var recordBuilder = new WarehouseRecordBuilder();
+                                var data = ListDataCT.ToArray();
+                                int lengthData = data.Length;
+                                for (int index = 0; index < lengthData; index++)
+                                {
+                                    recordBuilder
+                                    .AddMaVatTu(data[index].MaVT)
+                                    .AddTenVatTu(data[index].TenVT)
+                                    .AddSoLuongThucTe(data[index].SLThucTe.ToString())
+                                    .AddSoLuongSoSach(data[index].SLSoSach.ToString())
+                                    .AddDonGia(data[index].DonGia.ToString())
+                                    .AddDonViTinh(data[index].TenDVT)
+                                    .AddTaiKhoanNo(data[index].MaTK);
+                                    if (index != lengthData - 1)
+                                        recordBuilder.NewRecord();
+                                }
+                                var records = recordBuilder.Build();
+                                excel.InsertHeader(header);
+                                excel.InsertRecord(records);
+                                excel.Save(sfd.FileName);
+                            }
+                        });
+                    }
+                }
             });
 
             LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -417,50 +476,51 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 (p) => true,
                 (p) =>
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "File excel|*.xls;*.xlsx";
-                if(openFileDialog.ShowDialog() == DialogResult.OK)
+                using (OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "File excel | *.xls;*.xlsx", ValidateNames = true })
                 {
-                    using(var warehouse = new WarehouseExcel(openFileDialog.FileName))
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        var header = new WarehouseHeaderModel(warehouse.ReadHeader());
-                        var records = warehouse.ReadRecords().Select(item => new WarehouseRecordModel(item)).Select(item => new CT_PhieuNhapDetail
+                        using (var warehouse = new WarehouseExcel(openFileDialog.FileName))
                         {
-                            MaSo = 0,
-                            SoPhieu = header.SoPhieu,
-                            MaVT = item.MaVatTu,
-                            TenVT = item.TenVatTu,
-                            TenDVT = item.DonViTinh,
-                            MaTK = item.TaiKhoanNo,
-                            SLSoSach = Convert.ToDouble(item.SoLuongSoSach),
-                            SLThucTe = Convert.ToDouble(item.SoLuongThucTe),
-                            DonGia = Convert.ToDecimal(item.DonGia),
-                            ThanhTien = 0
-                        }).ToArray();
-                        foreach(var record in records)
-                        {
-                            ListDataCT.Add(record);
+                            var header = new WarehouseHeaderModel(warehouse.ReadHeader());
+                            var records = warehouse.ReadRecords().Select(item => new WarehouseRecordModel(item)).Select(item => new CT_PhieuNhapDetail
+                            {
+                                MaSo = 0,
+                                SoPhieu = header.SoPhieu,
+                                MaVT = item.MaVatTu,
+                                TenVT = item.TenVatTu,
+                                TenDVT = item.DonViTinh,
+                                MaTK = item.TaiKhoanNo,
+                                SLSoSach = Convert.ToDouble(item.SoLuongSoSach),
+                                SLThucTe = Convert.ToDouble(item.SoLuongThucTe),
+                                DonGia = Convert.ToDecimal(item.DonGia),
+                                ThanhTien = 0
+                            }).ToArray();
+                            foreach (var record in records)
+                            {
+                                ListDataCT.Add(record);
+                            }
+                            txtSoPhieu = header.SoPhieu;
+                            selectedMaNguoiGiao = header.NguoiGiao;
+                            selectedMaKho = header.NhapVaoKho;
+                            if (DateTime.TryParse(header.NgayNhap, out DateTime resut))
+                                selectedNgayNhap = resut;
+                            txtTenNCC = header.NhaCungCap;
+                            txtChungTuLQ = header.ChungTuLienQuan;
+                            selectedTKCo = header.TaiKhoanCo;
+                            txtLyDo = header.LyDo;
                         }
-                        txtSoPhieu = header.SoPhieu;
-                        selectedMaNguoiGiao = header.NguoiGiao;
-                        selectedMaKho = header.NhapVaoKho;
-                        if (DateTime.TryParse(header.NgayNhap, out DateTime resut))
-                            selectedNgayNhap = resut;
-                        txtTenNCC = header.NhaCungCap;
-                        txtChungTuLQ = header.ChungTuLienQuan;
-                        selectedTKCo = header.TaiKhoanCo;
-                        txtLyDo = header.LyDo;
+                        /*CT_PhieuNhapDetail ct = new CT_PhieuNhapDetail()
+                        {
+                            SoPhieu = txtSoPhieu,
+                            MaVT = selectedVT.MaVT,
+                            TenVT = selectedVT.TenVT,
+                            TenDVT = selectedVT.TenDVT,
+                            MaTK = selectedVT.MaTK,
+                        };*/
+                        /*ListDataCT.Add(ct);*/
+                        OnPropertyChanged("ListVTSelect");
                     }
-                    /*CT_PhieuNhapDetail ct = new CT_PhieuNhapDetail()
-                    {
-                        SoPhieu = txtSoPhieu,
-                        MaVT = selectedVT.MaVT,
-                        TenVT = selectedVT.TenVT,
-                        TenDVT = selectedVT.TenDVT,
-                        MaTK = selectedVT.MaTK,
-                    };*/
-                    /*ListDataCT.Add(ct);*/
-                    OnPropertyChanged("ListVTSelect");
                 }
             });
 
