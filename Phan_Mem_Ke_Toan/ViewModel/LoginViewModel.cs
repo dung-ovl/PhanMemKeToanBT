@@ -113,11 +113,11 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 p.SelectedIndex = 1;
             });
 
-            SignInCommand = new RelayCommand<StackPanel>((p) => { return Valid.IsValid(p); }, (p) =>
+            SignInCommand = new RelayCommand<StackPanel>((p) => { return Valid.IsValid(p); }, async (p) =>
             {
                 ShowError = "Collapsed";
-                if (IsValidAccount())
-                { 
+                if (await IsValidAccount())
+                {
                     main = new MainWindow();
                     main.Show();
                     window.Hide();
@@ -144,12 +144,11 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
         }
 
-        public bool IsValidAccount()
+        public async Task<bool> IsValidAccount()
         {
-            string url = "nguoidung/token/?TenDangNhap=" + account.TenDangNhap + "&MatKhau=" + account.MatKhau;
-            string JsonData = CRUD.GetJsonData(url);
+            string JsonData = await HttpClientFactory.Login(account.TenDangNhap, account.MatKhau);
             currentUser = JsonConvert.DeserializeObject<AccountSystem>(JsonData);
-            return currentUser!=null;
+            return currentUser != null;
         }
 
         public void LoadTableData()

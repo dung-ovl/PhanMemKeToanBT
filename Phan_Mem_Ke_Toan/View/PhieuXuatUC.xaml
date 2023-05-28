@@ -191,6 +191,17 @@
                                                                  Foreground="#275090"
                                                                  Width="18" />
                                     </Button>
+                                    <Button  Style="{StaticResource MaterialDesignIconButton}"
+                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.ExportExcelCommand}"
+                                             CommandParameter="{Binding}"
+                                             Width="24"
+                                             Height="24"
+                                             ToolTip="Xuất file Excel">
+                                        <materialDesign:PackIcon Kind="FileExcelBox"
+                                                                 Foreground="#1d6f42"
+                                                                 Width="18" />
+                                    </Button>
                                 </DockPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

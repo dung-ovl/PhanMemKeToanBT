@@ -9,9 +9,53 @@ using System.Threading.Tasks;
 
 namespace Phan_Mem_Ke_Toan.API
 {
+    public static class HttpClientFactory
+    {
+        private static string JWT_AccessToken = string.Empty;
+        private static readonly Uri API_Connection = new Uri("http://localhost:3000");
+
+        private class LoginDto
+        {
+            [JsonProperty("data")]
+            public object data { get; set; }
+            [JsonProperty("access_token")]
+            public string access_token { get; set; }
+        }
+
+        public static async Task<string> Login(string tenDangNhap, string matKhau)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = API_Connection;
+                HttpResponseMessage response = await httpClient.PostAsync("/nguoidung/login",
+                    new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        tenDangNhap = tenDangNhap,
+                        matKhau = tenDangNhap
+                    }),
+                    Encoding.UTF8,
+                    "application/json"));
+                if (response.IsSuccessStatusCode)
+                {
+                    LoginDto result = JsonConvert.DeserializeObject<LoginDto>(await response.Content.ReadAsStringAsync());
+                    JWT_AccessToken = result.access_token;
+                    return JsonConvert.SerializeObject(result.data);
+                }
+            }
+            return string.Empty;
+        }
+
+        public static HttpClient HttpClientAuth()
+        {
+            HttpClient httpClient = new HttpClient { BaseAddress = API_Connection };
+            if (!string.IsNullOrWhiteSpace(JWT_AccessToken))
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWT_AccessToken);
+            return httpClient;
+        }
+    }
+
     public class CRUD
     {
-        private static readonly Uri API_Connection = new Uri("https://ketoan-api.onrender.com");
         public static string GeneratePrimaryKey(string lastKey)
         {
             string key = lastKey;
@@ -33,11 +77,10 @@ namespace Phan_Mem_Ke_Toan.API
         }
         public static string GetJsonData(string tableName)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
                 try
                 {
-                    client.BaseAddress = API_Connection;
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     HttpResponseMessage response = client.GetAsync("/" + tableName).Result;
                     if (response.IsSuccessStatusCode)
@@ -58,11 +101,10 @@ namespace Phan_Mem_Ke_Toan.API
         }
         public static string GetJoinTableData(string tableName)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
                 try
                 {
-                    client.BaseAddress = API_Connection;
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     HttpResponseMessage response = client.GetAsync("/" + tableName + "/join").Result;
                     if (response.IsSuccessStatusCode)
@@ -83,9 +125,8 @@ namespace Phan_Mem_Ke_Toan.API
         }
         public static string GetDataByColumnName(string tableName, string columnName)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
-                client.BaseAddress = API_Connection;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = client.GetAsync(tableName + "/" + columnName).Result;
                 if (response.IsSuccessStatusCode)
@@ -102,49 +143,45 @@ namespace Phan_Mem_Ke_Toan.API
 
         public static bool InsertData(string tableName, object s)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
                 var json = JsonConvert.SerializeObject(s);
                 var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-                client.BaseAddress = API_Connection;
                 var response = client.PostAsync("/" + tableName, stringContent).Result;
                 return (response.IsSuccessStatusCode);
             }
         }
         public static bool UpdateData(string tableName, object s)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
                 var json = JsonConvert.SerializeObject(s);
                 var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-                client.BaseAddress = API_Connection;
                 var response = client.PutAsync("/" + tableName, stringContent).Result;
                 return (response.IsSuccessStatusCode);
             }
         }
         public static bool DeleteData(string tableName, string primaryKey)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
-                client.BaseAddress = API_Connection;
                 var response = client.DeleteAsync(tableName + "/" + primaryKey).Result;
                 return (response.IsSuccessStatusCode);
             }
         }
         public static bool UpdateTongTien(string tableName, string SoPhieu, object s)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
                 var json = JsonConvert.SerializeObject(s);
                 var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-                client.BaseAddress = API_Connection;
                 var response = client.PutAsync("/" + tableName + "/" + SoPhieu, stringContent).Result;
                 return (response.IsSuccessStatusCode);
             }
         }
         public static bool TinhGiaXuatKho(DateTime start, DateTime end)
         {
-            using (var client = new HttpClient())
+            using (var client = HttpClientFactory.HttpClientAuth())
             {
                 KhoangThoiGian s = new KhoangThoiGian
                 {
@@ -153,7 +190,6 @@ namespace Phan_Mem_Ke_Toan.API
                 };
                 var json = JsonConvert.SerializeObject(s);
                 var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-                client.BaseAddress = API_Connection;
                 var response = client.PutAsync("/vattu/tinhgiaxuat" , stringContent).Result;
                 return (response.IsSuccessStatusCode);
             }

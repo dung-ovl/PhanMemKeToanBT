@@ -19,6 +19,9 @@ using System.Diagnostics;
 using System.Globalization;
 using Window = System.Windows.Window;
 using System.Threading;
+using Phan_Mem_Ke_Toan.Core.Excel.Implements.InventoryRecords;
+using Microsoft.Office.Interop.Excel;
+using Phan_Mem_Ke_Toan.Core.Excel.Implements.Warehouse;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
@@ -146,6 +149,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         }
 
         public ICommand ExportCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
         public ICommand ShowDetailCommand { get; set; }
         public ICommand DeleteItemCommandCT { get; set; }
         public ICommand AddCommandCT { get; set; }
@@ -235,6 +239,57 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 ExportBienBanKiemKe(selectedBienBan);
 
             });
+
+            ExportExcelCommand = new RelayCommand<object>((p) => p != null, (p) =>
+            {
+                var selectedBienBan = p as BienBanDetail;
+                GetListCT(selectedBienBan.SoBienBan);
+                if (ListDataCT.Count == 0)
+                {
+                    notify.updateDataFail("Chưa có dữ liệu chi tiết, không thể xuất file");
+                    return;
+                }
+                using (SaveFileDialog sfd = new SaveFileDialog() { FileName = $"Biên bản kiểm kê ngày {selectedBienBan.NgayLap.ToString("dd-MM-yyyy")}", Filter = "File excel | *.xlsx", ValidateNames = true })
+                {
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        System.Threading.Tasks.Task.Factory.StartNew(() =>
+                        {
+                            using (var excel = new InventoryRecordsExcel())
+                            {
+                                var header = new InventoryRecordsHeaderBuilder()
+                                .AddNgayLap(selectedBienBan.NgayLap.ToString("dd/MM/yyyy"))
+                                .AddSoBienBan(selectedBienBan.SoBienBan)
+                                .AddTruongBan(selectedBienBan.TenTruongBan)
+                                .AddUyVien1(selectedBienBan.TenUyVien1)
+                                .AddUyVien2(selectedBienBan.TenUyVien2)
+                                .Build();
+                                var recordBuilder = new InventoryRecordsRecordBuilder();
+                                var data = ListDataCT.ToArray();
+                                int lengthData = data.Length;
+                                for (int index = 0; index < lengthData; index++)
+                                {
+                                    recordBuilder
+                                    .AddMaVatTu(data[index].MaVT)
+                                    .AddTenVatTu(data[index].TenVT)
+                                    .AddSoLuongThucTe(data[index].SLThucTe.ToString())
+                                    .AddSoLuongSoSach(data[index].SLSoSach.ToString())
+                                    .AddSoLuongSanPhamTot(data[index].SLPhamChatTot.ToString())
+                                    .AddSoLuongMatSanPham(data[index].SLMatPhamChat.ToString())
+                                    .AddDonViTinh(data[index].TenDVT);
+                                    if (index != lengthData - 1)
+                                        recordBuilder.NewRecord();
+                                }
+                                var records = recordBuilder.Build();
+                                excel.InsertHeader(header);
+                                excel.InsertRecord(records);
+                                excel.Save(sfd.FileName);
+                            }
+                        });
+                    }
+                }
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 LoadNewData();
@@ -558,19 +613,19 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
                             float PageWidth = document.PageSetup.PageWidth - document.PageSetup.LeftMargin - document.PageSetup.RightMargin;
 
-                            Range wordRange = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
+                            Microsoft.Office.Interop.Word.Range wordRange = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
                             Table HeaderTable = document.Tables.Add(wordRange, 1, 2);
                             HeaderTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
                             HeaderTable.Columns[1].Width = 0.62f * PageWidth;
                             HeaderTable.Columns[2].Width = PageWidth - HeaderTable.Columns[1].Width;
 
-                            Range col1Range = HeaderTable.Cell(1, 1).Range;
+                            Microsoft.Office.Interop.Word.Range col1Range = HeaderTable.Cell(1, 1).Range;
                             col1Range.Text = "Đơn vị:......\vĐịa chỉ:......";
                             col1Range.Font.Bold = 1;
 
                             object oCollapseStart = WdCollapseDirection.wdCollapseStart;
                             object oCollapseEnd = WdCollapseDirection.wdCollapseEnd;
-                            Range col2Range = HeaderTable.Cell(1, 2).Range;
+                            Microsoft.Office.Interop.Word.Range col2Range = HeaderTable.Cell(1, 2).Range;
                             col2Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
                             col2Range.Collapse(ref oCollapseStart);
                             col2Range.Text = "Mẫu số 05 - VT\v";
@@ -728,7 +783,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             MainTable.Cell(2, 9).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
                             for (int col = 6; col <= 13; col++)
-                              MainTable.Cell(3, col).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                MainTable.Cell(3, col).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
 
 
@@ -790,7 +845,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                                     MainTable.Cell(i + 5, 11).Range.Text = (slthua * dongia).ToString("C0", nfi);
                                     MainTable.Cell(i + 5, 11).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
                                     MainTable.Cell(i + 5, 11).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
-                                } 
+                                }
                                 //SLThieu
                                 decimal slthieu = (decimal)ListDataCT[i].SLThieu;
                                 if (slthieu > 0)
@@ -818,14 +873,14 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             Last.SpaceBefore = 6.0f;
                             Last.Range.InsertParagraphAfter();
 
-                            Range wordRange2 = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
+                            Microsoft.Office.Interop.Word.Range wordRange2 = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
 
                             Table SignTable = document.Tables.Add(wordRange2, 1, 5);
                             SignTable.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
                             SignTable.Range.Font.Italic = 0;
                             SignTable.Range.Font.Bold = 0;
                             SignTable.Range.Font.Size = 11;
-                            Range col1 = SignTable.Cell(1, 1).Range;
+                            Microsoft.Office.Interop.Word.Range col1 = SignTable.Cell(1, 1).Range;
                             col1.Collapse(ref oCollapseStart);
                             col1.Text = "\vNgười lập phiếu\v";
                             col1.Font.Bold = 1;
@@ -833,7 +888,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             col1.Text = "(Ký, họ tên)";
                             col1.Font.Italic = 1;
 
-                            Range col2 = SignTable.Cell(1, 2).Range;
+                            Microsoft.Office.Interop.Word.Range col2 = SignTable.Cell(1, 2).Range;
                             col2.Collapse(ref oCollapseStart);
                             col2.Text = "\vNgười nhận hàng\v";
                             col2.Font.Bold = 1;
@@ -841,7 +896,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             col2.Text = "(Ký, họ tên)";
                             col2.Font.Italic = 1;
 
-                            Range col3 = SignTable.Cell(1, 3).Range;
+                            Microsoft.Office.Interop.Word.Range col3 = SignTable.Cell(1, 3).Range;
                             col3.Collapse(ref oCollapseStart);
                             col3.Text = "\vThủ kho\v";
                             col3.Font.Bold = 1;
@@ -849,7 +904,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             col3.Text = "(Ký, họ tên)";
                             col3.Font.Italic = 1;
 
-                            Range col4 = SignTable.Cell(1, 4).Range;
+                            Microsoft.Office.Interop.Word.Range col4 = SignTable.Cell(1, 4).Range;
                             col4.Collapse(ref oCollapseStart);
                             col4.Text = "\vKế toán trưởng\v(Hoặc bộ phận có nhu cầu nhập)\v";
                             col4.Font.Bold = 1;
@@ -857,7 +912,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             col4.Text = "(Ký, họ tên)";
                             col4.Font.Italic = 1;
 
-                            Range col5 = SignTable.Cell(1, 5).Range;
+                            Microsoft.Office.Interop.Word.Range col5 = SignTable.Cell(1, 5).Range;
                             col5.Collapse(ref oCollapseStart);
                             col5.Text = "Ngày " + Ngay + " tháng " + Thang + " năm " + Nam + "\v";
                             col5.Font.Italic = 1;
