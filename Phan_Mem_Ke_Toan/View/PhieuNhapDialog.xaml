@@ -117,6 +117,9 @@
                         <TextBox.Text>
                             <Binding Path="txtChungTuLQ"
                                      UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
