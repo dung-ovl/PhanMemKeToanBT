@@ -12,7 +12,7 @@ namespace Phan_Mem_Ke_Toan.API
     public static class HttpClientFactory
     {
         private static string JWT_AccessToken = string.Empty;
-        private static readonly Uri API_Connection = new Uri("http://localhost:3000/");
+        private static readonly Uri API_Connection = new Uri("https://material-accounting-api.onrender.com/");
 
         private class LoginDto
         {
