@@ -530,13 +530,13 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             //Lấy ra tất cả vật tư có trong tháng cần báo cáo
             Dictionary<string, VatTuDetail> listNXT = new Dictionary<string, VatTuDetail>();
             foreach (var item in listTonKho)
-                if (!listNXT.ContainsKey(item.MaVT))
+                if (item.MaVT != null && !listNXT.ContainsKey(item.MaVT))
                     listNXT.Add(item.MaVT, GetDetailVT(item.MaVT));
             foreach (var item in listNhap)
-                if (!listNXT.ContainsKey(item.MaVT))
+                if (item.MaVT != null && !listNXT.ContainsKey(item.MaVT))
                     listNXT.Add(item.MaVT, GetDetailVT(item.MaVT));
             foreach (var item in listXuat)
-                if (!listNXT.ContainsKey(item.MaVT))
+                if (item.MaVT != null && !listNXT.ContainsKey(item.MaVT))
                     listNXT.Add(item.MaVT, GetDetailVT(item.MaVT));
             ListDataCT = new ObservableCollection<CT_BienBanDetail>();
             foreach (var item in listNXT)
