@@ -157,7 +157,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         {
             string url = "dudauvattu/kiemtradudauky?MaVT=" + DuDauVTModel.MaVT + "&MaKho=" + DuDauVTModel.MaKho + "&Nam=" + DuDauVTModel.Ngay.Year;
             string data = CRUD.GetJsonData(url);
-            return !(String.IsNullOrEmpty(data));
+            return !(String.IsNullOrEmpty(data) || data == "[]");
         }
         public void GetListVatTu()
         {
