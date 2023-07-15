@@ -30,8 +30,8 @@ namespace Phan_Mem_Ke_Toan.API
                 HttpResponseMessage response = await httpClient.PostAsync("/nguoidung/login",
                     new StringContent(JsonConvert.SerializeObject(new
                     {
-                        tenDangNhap = tenDangNhap,
-                        matKhau = tenDangNhap
+                        TenDangNhap = tenDangNhap,
+                        MatKhau = matKhau
                     }),
                     Encoding.UTF8,
                     "application/json"));
